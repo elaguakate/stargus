@@ -119,6 +119,13 @@ g_pbhrp:Load()
 g_pbhrg = CGraphic:New("ui/protoss/button right disabled 104x28.png")
 g_pbhrg:Load()
 
+g_mmb = {}
+g_mmb.normal   = CGraphic:New("ui/image00001.png")
+g_mmb.normal:Load()
+g_mmb.pressed  = CGraphic:New("ui/image00001.png")
+g_mmb.pressed:Load()
+g_mmb.disabled = CGraphic:New("ui/image00001.png")
+g_mmb.disabled:Load()
 
 
 
@@ -268,6 +275,13 @@ function AddMenuHelpers(menu)
     end
     b:setSize(104, 28)
     return b
+  end
+
+  function menu:addMainMenuButton(image, caption, hotkey, x, y, callback)
+    local b = self:addImageButton(caption, hotkey, x, y, callback)
+    b:setNormalImage(image.normal)
+    b:setPressedImage(image.pressed)
+    b:setDisabledImage(image.disabled)
   end
 
   function menu:addSlider(min, max, w, h, x, y, callback)
@@ -707,8 +721,9 @@ function BuildProgramStartMenu()
   menu:addFullButton("~!Options", "o", offx + 208, offy + 104 + 36*5,
     function() RunOptionsMenu(); menu:stop(1) end)
   menu:addFullButton("S~!how Credits", "h", offx + 208, offy + 104 + 36*6, RunShowCreditsMenu)
-
-  menu:addFullButton("E~!xit Program", "x", offx + 208, offy + 104 + 36*8,
+  menu:addMainMenuButton(g_mmb, "~!Exit", "x", (Video.Width / 2), (Video.Height / 2), 
+    function() menu:stop() end)
+  menu:addFullButton("~!Exit Program", "x", offx + 208, offy + 104 + 36*8,
     function() menu:stop() end)
 
   return menu:run()
